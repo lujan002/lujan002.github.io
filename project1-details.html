@@ -1,0 +1,144 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Project Title - Luke Jansen</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="index.html" class="logo">Luke Jansen</a>
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul class="links">
+							<li><a href="index.html">Projects</a></li>
+							<li><a href="generic.html">Experience</a></li>
+							<li><a href="elements.html">About Me</a></li>
+						</ul>
+						<ul class="icons">
+							<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+							<section class="post">
+								<header class="major">
+									<span class="date">Fall 2025 - Present</span>
+									<h1>NU Rover</h1>
+									<h6>Northeastern University Mars Rover Design Team</h6>
+								</header>
+
+									<p>Below are the key projects I have worked on as part of NU Rover's software and autonomous systems team:<br></br>
+									<h2>GNSS Mux</h2>
+										<p>I created a GNSS Mux node that allows operators to seamlessly switch between mock and real rover pose data topics. 
+											Mocking the rover pose is useful for testing and debugging purposes, but before I added this feature, there was not a convenient way to switch between the two.
+											I streamlined this process by getting rid of separate topics for mock and real rover pose data and instead created a shared topic to which both mock and real 
+											rover pose data can be published. I created a toggle in the operator UI to switch between mock/real rover pose data and connected it to the GNSS Mux node in ROS. 
+											I also added quality of life considerations, such as having the toggle be set to "mock" immediately after a mock rover is created. 
+										</p>
+									<!-- <figure class="image" style="max-width: 50%; margin: 0 auto 2.5em auto; display: block; line-height: 1.2;">
+										<img src="images/gnss_settings.png" alt="View of the satellite map with mock rover and three waypoints. Before my method, operators had to manually add waypoints by clicking on this map." style="width: 100%; height: auto; display: block; margin: 0 auto;" />
+										<figcaption style="text-align: center; font-size: 0.6em; margin-top: 0.5em; line-height: 1.2;">
+											GNSS topic toggle in the operator UI. "Ublox" refers to manufacturer of the rover's physical GNSS receiver.
+										</figcaption>
+									</figure> -->
+								<h2>Camera Waypoints</h2>					
+									<p>This node enables rover operators to place navigation waypoints directly by clicking on the 
+										camera stream window in the operator UI. Navigation waypoints are used to guide the rover's path during autonomous navigation, 
+										or can be simply used to mark a location for the operator to navigate to during manual navigation.
+										Before I added this feature, operators would have to manually place waypoints by clicking on the satellite 
+										map. Since operators spend most of their time viewing the camera streams, this approach was 
+										time-consuming and especially error-prone in the Utah desert, where the featureless landscape makes finding
+										the correlation between the satellite imagery and points of interest viewed through the camera stream very difficult.
+									</p>
+									<figure class="image" style="max-width: 50%; margin: 0 auto 2.5em auto; display: block; line-height: 1.2;">
+										<img src="images/waypoints.png" alt="View of the satellite map with mock rover and three waypoints. Before my method, operators had to manually add waypoints by clicking on this map." style="width: 100%; height: auto; display: block; margin: 0 auto;" />
+										<figcaption style="text-align: center; font-size: 0.6em; margin-top: 0.5em; line-height: 1.2;">
+											View of the satellite map with the rover and three navigation waypoints. Before my method, operators had to manually add waypoints by clicking on this map.
+										</figcaption>
+									</figure>
+									<p>My work includes a click handler in the operator UI that captures user input clicks from the camera stream window, and a ROS service which takes the input and
+										creates a navigationwaypoint at the lat/lon coordinates of the projected point. First, pixel coordinates of the operator's click are normalized and 
+										an intersection ray is created using the camera intrinsics. The intersection of this ray with the 
+										ground is calculated using the well-known pinhole camera model, the known camera height above the ground, and a flat ground plane assumption.
+									</p>
+									<figure class="image" style="max-width: 50%; margin: 0 auto 2.5em auto; display: block; line-height: 1.2;">
+										<img src="images/camera_ground_projection.png" alt="Diagram: camera, projection ray to ground, and the projected waypoint location." style="width: 100%; height: auto; display: block; margin: 0 auto;" />
+										<figcaption style="text-align: center; font-size: 0.6em; margin-top: 0.5em; line-height: 1.2;">
+											Pinhole camera projection of clicked pixel onto a flat ground plane.
+										</figcaption>
+									</figure>
+									<p>The camera-centric projection coordinates are converted to UTM coordinates by looking up the camera frame -> rover frame -> UTM frame 
+										transforms in the TF tree. UTM coordinates are then converted to lat/lon coordinates given the UTM zone/letter determined by the rover's current position
+										and a new navigation waypoint is created at these lat/lon coordinates.
+									</p>
+													
+				
+								<h2>Global elevation costmap</h2>
+								<p>The rover's autonomous navigation stack previously relied solely on a local elevationcostmap with a 20-meter range, built from 
+									real-time depth camera data. While effective for immediate obstacle avoidance, this approach meant the rover had no awareness 
+									of terrain beyond its sensors' reach, making long-range autonomous path planning impossible. I developed a global 
+									elevation costmap that provides terrain traversability information for the entire competition area in Hanksville, Utah. With this data,
+									global path planning algorithms (A* in our case) can find optimal routes between navigation waypoints the operator has placed.
+								</p>
+								<p>I sourced elevation data from the USGS (United States Geological Survey), which provides publicly available Digital Elevation 
+									Models (DEMs) for the United States. I downloaded 1-meter resolution GeoTIFF data covering the competition site and used a peice of software 
+									called QGIS to calculate a slope map representing the maximum rate of elevation change at each cell of the elevation dataset.									
+									I then set up a ROS node to publish slope data as an OccupancyGrid ROS message. In this case, the concept of using slope to indicate cost (i.e. how traversable a cell is) 
+									is analogous to using occupancy probability to indicate whether a cell is traversable or not.
+								</p>
+								<figure class="image" style="max-width: 50%; margin: 0 auto 2.5em auto; display: block; line-height: 1.2;">
+									<img src="images/global_elev_map.jpg" alt="Global elevation costmap overlaid on the satellite map, showing terrain traversability with darker purple indicating steeper slopes." style="width: 100%; height: auto; display: block; margin: 0 auto;" />
+									<figcaption style="text-align: center; font-size: 0.6em; margin-top: 0.5em; line-height: 1.2;">
+										Global elevation costmap overlaid on the satellite map in the operator UI. Darker purple areas indicate higher cost (steeper slopes).
+									</figcaption>
+								</figure>
+								<p>Rather than using a simple binary traversable/non-traversable classification, I implemented slope 
+									intensity encoding: the costmap's 0–100 cost range encodes slope severity, with configurable thresholds at the extremes. 
+									Flat terrain is assigned low cost, steep but traversable slopes receive intermediate costs, and slopes exceeding a 
+									maximum threshold are marked as obstacles. This allows path planners to prefer flatter routes when available while still 
+									permitting navigation over moderately steep terrain when necessary.
+								</p>
+								<!-- <p>To properly integrate the costmap with the rover's existing coordinate frames, I implemented TF transforms that align 
+									the costmap frame with the UTM coordinate system. The costmap is centered on the rover's current GNSS position, 
+									providing a 1km × 1km window of terrain data around the rover that updates as it moves through the environment.
+								</p> -->
+
+					</div>
+
+
+				<!-- Copyright -->
+					<div id="copyright">
+						<ul><li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

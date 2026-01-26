@@ -4687,3 +4687,226 @@ input, select, textarea {
 		}
 
 	}
+
+/* Video Slide */
+
+	.video-slide {
+		position: relative;
+		width: 100%;
+		padding-bottom: 56.25%; /* 16:9 aspect ratio */
+		height: 0;
+	}
+
+	.video-slide iframe {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		border: 0;
+	}
+
+/* Slideshow */
+
+	.slideshow {
+		position: relative;
+		overflow: hidden;
+	}
+
+	.slideshow-inner {
+		position: relative;
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.slideshow .slide {
+		position: absolute;
+		top: 50%;
+		left: 0;
+		width: 100%;
+		transform: translateY(-50%);
+		opacity: 0;
+		transition: opacity 0.6s ease-in-out;
+	}
+
+	.slideshow .slide:first-child {
+		position: relative;
+		top: 0;
+		transform: none;
+	}
+
+	.slideshow .slide.active {
+		opacity: 1;
+		z-index: 1;
+	}
+
+	/* When slideshow has video, use fixed aspect ratio */
+	.slideshow:has(.video-slide) .slideshow-inner {
+		aspect-ratio: 16 / 9;
+	}
+
+	.slideshow:has(.video-slide) .slide {
+		top: 0;
+		transform: none;
+		height: 100%;
+	}
+
+	.slideshow:has(.video-slide) .slide img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.slide-arrow {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		background: none;
+		color: rgba(150, 150, 150, 0.8);
+		border: none;
+		outline: none;
+		box-shadow: none;
+		padding: 0.5rem;
+		cursor: pointer;
+		font-size: 2rem;
+		font-weight: bold;
+		z-index: 2;
+		opacity: 0;
+		transition: opacity 0.3s ease, color 0.2s ease;
+		text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+	}
+
+	.slideshow:hover .slide-arrow {
+		opacity: 1;
+	}
+
+	.slide-arrow:hover,
+	.slide-arrow:focus,
+	.slide-arrow:active {
+		color: #18bfef;
+		border: none;
+		outline: none;
+		box-shadow: none;
+	}
+
+	.slide-arrow.prev {
+		left: 0.5rem;
+	}
+
+	.slide-arrow.next {
+		right: 0.5rem;
+	}
+
+	.slide-dots {
+		position: absolute;
+		bottom: 0.75rem;
+		left: 50%;
+		transform: translateX(-50%);
+		display: flex;
+		gap: 0.5rem;
+		z-index: 2;
+	}
+
+	.slide-dot {
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		background: rgba(180, 180, 180, 0.6);
+		border: none;
+		padding: 0;
+		cursor: pointer;
+		transition: background 0.2s ease;
+	}
+
+	.slide-dot:hover,
+	.slide-dot.active {
+		background: rgba(100, 100, 100, 0.9);
+	}
+
+	@media screen and (max-width: 736px) {
+
+		.slide-arrow {
+			font-size: 1.5rem;
+		}
+
+		.slide-dot {
+			width: 6px;
+			height: 6px;
+		}
+
+	}
+
+/* Headshot */
+
+	.headshot-wrapper {
+		position: relative;
+		width: 800px;
+		height: 800px;
+		margin: 0 auto 2rem auto;
+		max-width: 90vw;
+		max-height: 90vw;
+	}
+
+	.headshot-container {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
+
+	.headshot {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		border-radius: 50%;
+		-webkit-mask-image: radial-gradient(circle, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 72%);
+		mask-image: radial-gradient(circle, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 72%);
+	}
+
+	.headshot-overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		display: flex;
+		align-items: flex-end;
+		justify-content: center;
+		padding-bottom: 0%;
+		z-index: 2;
+	}
+
+	.headshot-overlay h1 {
+		margin: 0;
+		text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+	}
+
+	@media screen and (max-width: 980px) {
+
+		.headshot-wrapper {
+			width: 600px;
+			height: 600px;
+		}
+
+	}
+
+	@media screen and (max-width: 736px) {
+
+		.headshot-wrapper {
+			width: 100%;
+			height: auto;
+			aspect-ratio: 1;
+			margin-bottom: 1rem;
+		}
+
+		.headshot-overlay h1 {
+			font-size: 2.5rem;
+		}
+
+	}

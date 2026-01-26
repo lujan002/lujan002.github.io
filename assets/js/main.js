@@ -234,25 +234,177 @@
 
 				});
 
-			// Hide intro on scroll (<= small).
-				breakpoints.on('<=small', function() {
+		// Hide intro on scroll (<= small).
+			breakpoints.on('<=small', function() {
 
-					$main.unscrollex();
+				$main.unscrollex();
 
-					$main.scrollex({
-						mode: 'middle',
-						top: '15vh',
-						bottom: '-15vh',
-						enter: function() {
-							$intro.addClass('hidden');
-						},
-						leave: function() {
-							$intro.removeClass('hidden');
-						}
-					});
+				$main.scrollex({
+					mode: 'middle',
+					top: '15vh',
+					bottom: '-15vh',
+					enter: function() {
+						$intro.addClass('hidden');
+					},
+					leave: function() {
+						$intro.removeClass('hidden');
+					}
+				});
 
-			});
+		});
 
+	}
+
+	// Slideshows
+	var allSlideshows = [];
+
+	$('.slideshow').each(function(index) {
+		var $slideshow = $(this),
+			$slides = $slideshow.find('.slide'),
+			$prevBtn = $slideshow.find('.slide-arrow.prev'),
+			$nextBtn = $slideshow.find('.slide-arrow.next'),
+			$dotsContainer = $slideshow.find('.slide-dots'),
+			currentIndex = 0,
+			slideCount = $slides.length,
+			autoPlayInterval = null,
+			autoPlayDelay = 4000, // 4 seconds
+			isPaused = false;
+
+		// Create dots
+		for (var i = 0; i < slideCount; i++) {
+			var $dot = $('<button class="slide-dot" aria-label="Go to slide ' + (i + 1) + '"></button>');
+			if (i === 0) $dot.addClass('active');
+			$dot.data('index', i);
+			$dotsContainer.append($dot);
 		}
+
+		var $dots = $dotsContainer.find('.slide-dot');
+
+		function goToSlide(idx) {
+			if (idx < 0) idx = slideCount - 1;
+			if (idx >= slideCount) idx = 0;
+			
+			$slides.removeClass('active');
+			$dots.removeClass('active');
+			
+			$slides.eq(idx).addClass('active');
+			$dots.eq(idx).addClass('active');
+			
+			currentIndex = idx;
+		}
+
+		function nextSlide() {
+			goToSlide(currentIndex + 1);
+		}
+
+		function prevSlide() {
+			goToSlide(currentIndex - 1);
+		}
+
+		function startAutoPlay() {
+			stopAutoPlay();
+			if (isPaused) return;
+			autoPlayInterval = setInterval(nextSlide, autoPlayDelay);
+		}
+
+		function stopAutoPlay() {
+			if (autoPlayInterval) {
+				clearInterval(autoPlayInterval);
+				autoPlayInterval = null;
+			}
+		}
+
+		function pause() {
+			isPaused = true;
+			stopAutoPlay();
+		}
+
+		function resume() {
+			isPaused = false;
+			startAutoPlay();
+		}
+
+		// Store reference
+		allSlideshows.push({
+			$el: $slideshow,
+			pause: pause,
+			resume: resume,
+			startAutoPlay: startAutoPlay,
+			stopAutoPlay: stopAutoPlay
+		});
+
+		// Event listeners
+		$nextBtn.on('click', function(e) {
+			e.preventDefault();
+			nextSlide();
+			startAutoPlay();
+		});
+
+		$prevBtn.on('click', function(e) {
+			e.preventDefault();
+			prevSlide();
+			startAutoPlay();
+		});
+
+		$dots.on('click', function(e) {
+			e.preventDefault();
+			var idx = $(this).data('index');
+			goToSlide(idx);
+			startAutoPlay();
+		});
+
+		// Pause on hover
+		$slideshow.on('mouseenter', function() {
+			stopAutoPlay();
+		});
+
+		$slideshow.on('mouseleave', function() {
+			if (!isPaused) startAutoPlay();
+		});
+
+		// Start auto-play
+		startAutoPlay();
+	});
+
+	// Detect iframe click via window blur
+	// When user clicks inside iframe, window loses focus
+	var pausedSlideshows = [];
+
+	$(window).on('blur', function() {
+		// Check if an iframe is focused (user clicked on video)
+		setTimeout(function() {
+			var activeEl = document.activeElement;
+			if (activeEl && activeEl.tagName === 'IFRAME') {
+				var $slideshow = $(activeEl).closest('.slideshow');
+				if ($slideshow.length) {
+					// Find and pause this slideshow
+					for (var i = 0; i < allSlideshows.length; i++) {
+						if (allSlideshows[i].$el.is($slideshow)) {
+							// Only add if not already paused
+							if (pausedSlideshows.indexOf(allSlideshows[i]) === -1) {
+								allSlideshows[i].pause();
+								pausedSlideshows.push(allSlideshows[i]);
+							}
+							break;
+						}
+					}
+				}
+			}
+		}, 0);
+	});
+
+	// Resume all paused slideshows when clicking outside iframes
+	$(document).on('click', function(e) {
+		// If click is not inside an iframe's slideshow, resume all paused slideshows
+		var $target = $(e.target);
+		var clickedInsideVideoSlideshow = $target.closest('.video-slide').length > 0;
+		
+		if (!clickedInsideVideoSlideshow && pausedSlideshows.length > 0) {
+			for (var i = 0; i < pausedSlideshows.length; i++) {
+				pausedSlideshows[i].resume();
+			}
+			pausedSlideshows = [];
+		}
+	});
 
 })(jQuery);
