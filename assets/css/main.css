@@ -3764,6 +3764,8 @@ input, select, textarea {
 			letter-spacing: 0.075em;
 			text-transform: uppercase;
 			padding-left: 1rem;
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
 		}
 
 			#nav ul.icons.nav-contact li {
@@ -3780,6 +3782,8 @@ input, select, textarea {
 					padding: 0 2rem;
 					outline: none;
 					line-height: 4rem;
+					font-family: inherit;
+					font-weight: inherit;
 				}
 
 					#nav ul.icons.nav-contact li a:hover {
@@ -3794,6 +3798,8 @@ input, select, textarea {
 					font-size: 0.9em;
 					margin-right: 0.35rem;
 					vertical-align: middle;
+					-moz-osx-font-smoothing: grayscale;
+					-webkit-font-smoothing: antialiased;
 				}
 
 		@media screen and (max-width: 980px) {
@@ -4671,7 +4677,6 @@ input, select, textarea {
 			right: 0;
 			text-align: right;
 			top: 0;
-			vertical-align: middle;
 			width: 7rem;
 		}
 
