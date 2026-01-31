@@ -24,6 +24,13 @@
 			}
 		}
 
+		> p.back-to-projects {
+			margin: 0;
+			padding-bottom: 0;
+			position: relative;
+			z-index: 1;
+		}
+
 		> footer {
 			text-align: center;
 		}
@@ -71,6 +78,10 @@
 					}
 				}
 			}
+		}
+
+		> p.back-to-projects + section.post {
+			padding-top: 0;
 		}
 
 		> .posts {
