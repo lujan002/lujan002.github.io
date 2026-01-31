@@ -3831,6 +3831,13 @@ input, select, textarea {
 				border-top: 0;
 			}
 
+		#main > p.back-to-projects {
+			margin: 0;
+			padding-bottom: 0;
+			position: relative;
+			z-index: 1;
+		}
+
 		#main > footer {
 			text-align: center;
 		}
@@ -3879,6 +3886,10 @@ input, select, textarea {
 					}
 
 			}
+
+		#main > p.back-to-projects + section.post {
+			padding-top: 0;
+		}
 
 		#main > .posts {
 			display: -moz-flex;
