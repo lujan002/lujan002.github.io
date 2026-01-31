@@ -1,0 +1,135 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>SLAM Evaluation with Spot - Luke Jansen</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="index.html" class="logo">Luke Jansen</a>
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul class="links">
+							<li><a href="index.html#header">Projects</a></li>
+							<li><a href="experiences.html">Experience</a></li>
+						</ul>
+						<ul class="icons nav-contact">
+							<li><a href="mailto:jansen.lu@northeastern.edu" class="icon solid fa-envelope">jansen.lu@northeastern.edu</a></li>
+							<li><a href="https://www.linkedin.com/in/luketjansen/" target="_blank" class="icon brands fa-linkedin">LinkedIn</a></li>
+							<li><a href="https://github.com/lujan002" target="_blank" class="icon brands fa-github">GitHub</a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+							<section class="post">
+								<header class="major">
+									<span class="date">Fall 2025</span>
+									<h1>Evaluation of Modern SLAM Methods with Spot</h1>
+									<h6>Northeastern EECE 5554: Sensing and Navigation</h6>
+								</header>
+								<h2>Introduction</h2>
+								<p>Simultaneous localization and mapping (SLAM) is a fundamental problem in mobile robotics concerned with 
+									how a robot can estimate its pose while simultaneously constructing a map in an unknown environment. 
+									The goal of this project was to gain a deeper understanding of modern state-of-the-art SLAM methods 
+									and evaluate several of these methods on real data collected using a Boston Dynamics Spot quadruped platform. 
+									Specifically, the methods we evaluated were <strong>ORB-SLAM3</strong>, <strong>LOAM-SLAM</strong>, 
+									<strong>KISS-ICP</strong>, <strong>RTAB-Map</strong>, and the mapping library <strong>OctoMap</strong>.
+								</p>
+								<figure class="image" style="max-width: 60%; margin: 0 auto 2.5em auto; display: block; line-height: 1.2;">
+									<img src="images/spot_lidar.png" alt="Boston Dynamics Spot quadruped robot used for data collection." style="width: 100%; height: auto; display: block; margin: 0 auto;" />
+									<figcaption style="text-align: center; font-size: 0.6em; margin-top: 0.5em; line-height: 1.2;">
+										Boston Dynamics Spot quadruped robot equipped with Velodyne LiDAR payload used for data collection.
+									</figcaption>
+								</figure>
+
+								<h2>My Contributions</h2>	
+								<p>My primary responsibilities on this team project included:
+								</p>
+								<ul>
+									<li><strong>SLAM Algorithm Research:</strong> Researched and compared modern visual-inertial and LiDAR-inertial SLAM approaches, including their underlying optimization techniques (bundle adjustment, g2o, GTSAM).</li>
+									<li><strong>Spot SDK & ROS2 Setup:</strong> Learned the ins and outs of the Spot SDK and ROS2 Wrapper to develop a workflow to publish and record sensor data from Spot.</li>
+									<li><strong>Data Collection:</strong> Collected monocular camera, depth camera, LiDAR, and odometry data while walking Spot in a rectangular path roughly 50×20 meters in Northeastern University's EXP high bay.</li>
+									<li><strong>Coorindation of Team Work:</strong> Directed the team and assigned each team member research and implementation of one SLAM library to ensure each member had a sense of ownership over the project. I tasked myself with implementing ORB-SLAM3 and OctoMap.</li>
+
+								</ul>
+
+								<h2>Results</h2>
+								<h3>ORB-SLAM3</h3>
+								<p>ORB-SLAM3 is a visual SLAM system that extracts ORB features from camera images to track the camera's motion 
+									and build a sparse 3D map of feature points. I chose ORB-SLAM3 for its flexibility—it uniquely supports 
+									pure visual SLAM without requiring IMU data, which was important since the Spot SDK does not expose IMU measurements.
+									ORB-SLAM proved challenging to work with as the library is older, only officially supports ROS1, and required setting up a Docker container to run.
+									As you can see from the video below, the video stream from Spot's camera also cuts out near the end. Every time this would happen, because it is a purely visual SLAM system, 
+									ORB-SLAM3 would lose track of the camera's pose and restart the trajectory from the origin, rendering the results thereafter totally innacurate.
+								</p>
+								<div class="video-slide" style="max-width: 800px; margin: 0 auto 2.5em auto; position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+									<iframe src="https://www.youtube.com/embed/yHjyartDve0?enablejsapi=1" title="ORB-SLAM3 trajectory" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"></iframe>
+								</div>
+								<p style="text-align: center; font-size: 0.6em; margin-top: 0.5em; line-height: 1.2;">ORB-SLAM3 trajectory estimation on Spot-collected monocular camera data.</p>
+
+								<h3>OctoMap</h3>
+								<p>OctoMap is an efficient probabilistic 3D mapping framework based on octrees. Unlike SLAM algorithms that 
+									estimate robot pose, OctoMap is purely a mapping library that takes in point cloud data 
+									and builds a dense 3D occupancy map. This means that octomap requires time-synchronized odometry data to position the LiDAR scans. 
+									I used the odometry provided by Spot's onboard sensors (red arrow in video below) and the results were quite impressive.
+								</p>
+
+								<div class="video-slide" style="max-width: 800px; margin: 0 auto 2.5em auto; position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+									<iframe src="https://www.youtube.com/embed/BXkIGYJKC4w?enablejsapi=1" title="OctoMap EXP high bay" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"></iframe>
+								</div>
+								<p style="text-align: center; font-size: 0.6em; margin-top: 0.5em; line-height: 1.2;">Northeastern's EXP high bay mapped with OctoMap using Spot-collected LiDAR data.</p>
+
+
+								<h2>Full Report</h2>
+								<p>For more details, see the complete project report:</p>
+								<div style="width: 100%; max-width: 800px; margin: 2em auto; height: 600px;">
+									<iframe 
+										src="https://drive.google.com/file/d/1QoSAYlOHyzu70C0tMwdbUvUXHxzkmI2G/preview" 
+										width="100%" 
+										height="100%" 
+										style="border: none; display: block; margin: 0 auto;"
+										allow="autoplay">
+									</iframe>
+								</div>
+								<p style="text-align: center; margin-top: 1em;">
+									<a href="https://drive.google.com/drive/folders/1mT2UTVPsg-d0w2gx30_DOYEqHR6nBsIO" target="_blank" class="button">
+										Read the Report
+									</a>
+								</p>
+
+							</section>
+
+					</div>
+
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

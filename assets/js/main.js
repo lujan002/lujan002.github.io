@@ -333,16 +333,29 @@
 			stopAutoPlay: stopAutoPlay
 		});
 
+		// Helper: resume this slideshow if it was paused for video focus (remove from pausedSlideshows)
+		function resumeIfPausedForVideo() {
+			for (var i = 0; i < pausedSlideshows.length; i++) {
+				if (pausedSlideshows[i].$el.is($slideshow)) {
+					pausedSlideshows[i].resume();
+					pausedSlideshows.splice(i, 1);
+					break;
+				}
+			}
+		}
+
 		// Event listeners
 		$nextBtn.on('click', function(e) {
 			e.preventDefault();
 			nextSlide();
+			resumeIfPausedForVideo(); // switching away from video slide -> resume
 			startAutoPlay();
 		});
 
 		$prevBtn.on('click', function(e) {
 			e.preventDefault();
 			prevSlide();
+			resumeIfPausedForVideo();
 			startAutoPlay();
 		});
 
@@ -350,6 +363,7 @@
 			e.preventDefault();
 			var idx = $(this).data('index');
 			goToSlide(idx);
+			resumeIfPausedForVideo();
 			startAutoPlay();
 		});
 
@@ -366,45 +380,25 @@
 		startAutoPlay();
 	});
 
-	// Detect iframe click via window blur
-	// When user clicks inside iframe, window loses focus
+	// Pause slideshow when embedded video has focus / is being played (window blurs when user clicks iframe)
+	// Resume when user switches slide (next/prev/dot) or clicks outside the video
 	var pausedSlideshows = [];
 
 	$(window).on('blur', function() {
-		// Check if an iframe is focused (user clicked on video)
 		setTimeout(function() {
-			var activeEl = document.activeElement;
-			if (activeEl && activeEl.tagName === 'IFRAME') {
-				var $slideshow = $(activeEl).closest('.slideshow');
-				if ($slideshow.length) {
-					// Find and pause this slideshow
-					for (var i = 0; i < allSlideshows.length; i++) {
-						if (allSlideshows[i].$el.is($slideshow)) {
-							// Only add if not already paused
-							if (pausedSlideshows.indexOf(allSlideshows[i]) === -1) {
-								allSlideshows[i].pause();
-								pausedSlideshows.push(allSlideshows[i]);
-							}
-							break;
-						}
+			// Pause any slideshow that is currently showing a video slide (user is likely interacting with video)
+			for (var i = 0; i < allSlideshows.length; i++) {
+				var $slideshow = allSlideshows[i].$el;
+				if ($slideshow.find('.slide.video-slide.active').length > 0) {
+					if (pausedSlideshows.indexOf(allSlideshows[i]) === -1) {
+						allSlideshows[i].pause();
+						pausedSlideshows.push(allSlideshows[i]);
 					}
 				}
 			}
 		}, 0);
 	});
 
-	// Resume all paused slideshows when clicking outside iframes
-	$(document).on('click', function(e) {
-		// If click is not inside an iframe's slideshow, resume all paused slideshows
-		var $target = $(e.target);
-		var clickedInsideVideoSlideshow = $target.closest('.video-slide').length > 0;
-		
-		if (!clickedInsideVideoSlideshow && pausedSlideshows.length > 0) {
-			for (var i = 0; i < pausedSlideshows.length; i++) {
-				pausedSlideshows[i].resume();
-			}
-			pausedSlideshows = [];
-		}
-	});
+	// Slideshow only resumes when user clicks that slideshow's arrows or dots (handled in resumeIfPausedForVideo above)
 
 })(jQuery);

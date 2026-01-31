@@ -3620,7 +3620,7 @@ input, select, textarea {
 		line-height: 4rem;
 		margin: -4rem auto 0 auto;
 		overflow: hidden;
-		padding: 0 2rem 0 0;
+		padding: 0;
 		position: relative;
 		width: calc(100% - 4rem);
 		max-width: 72rem;
@@ -3744,6 +3744,57 @@ input, select, textarea {
 			flex-shrink: 0;
 			margin-bottom: 0;
 		}
+
+		#nav ul.icons.nav-contact {
+			display: -moz-flex;
+			display: -webkit-flex;
+			display: -ms-flex;
+			display: flex;
+			-moz-flex-direction: row;
+			-webkit-flex-direction: row;
+			-ms-flex-direction: row;
+			flex-direction: row;
+			-moz-align-items: stretch;
+			-webkit-align-items: stretch;
+			-ms-align-items: stretch;
+			align-items: stretch;
+			font-family: "Source Sans Pro", Helvetica, sans-serif;
+			font-weight: 900;
+			font-size: 0.8rem;
+			letter-spacing: 0.075em;
+			text-transform: uppercase;
+			padding-left: 1rem;
+		}
+
+			#nav ul.icons.nav-contact li {
+				display: block;
+				padding: 0;
+			}
+
+				#nav ul.icons.nav-contact li a {
+					-moz-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+					-webkit-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+					-ms-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+					transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+					display: block;
+					padding: 0 2rem;
+					outline: none;
+					line-height: 4rem;
+				}
+
+					#nav ul.icons.nav-contact li a:hover {
+						color: inherit !important;
+						background-color: rgba(255, 255, 255, 0.1);
+					}
+
+				#nav ul.icons.nav-contact li a.icon:before {
+					width: auto;
+					height: auto;
+					line-height: inherit;
+					font-size: 0.9em;
+					margin-right: 0.35rem;
+					vertical-align: middle;
+				}
 
 		@media screen and (max-width: 980px) {
 
@@ -4742,6 +4793,16 @@ input, select, textarea {
 		z-index: 1;
 	}
 
+	/* Keep all slideshow images at natural aspect ratio (no stretch/squish) */
+	.slideshow .slide img {
+		max-width: 100%;
+		max-height: 100%;
+		width: auto;
+		height: auto;
+		object-fit: contain;
+		object-position: center center;
+	}
+
 	/* When slideshow has video, use fixed aspect ratio */
 	.slideshow:has(.video-slide) .slideshow-inner {
 		aspect-ratio: 16 / 9;
@@ -4751,12 +4812,18 @@ input, select, textarea {
 		top: 0;
 		transform: none;
 		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 
 	.slideshow:has(.video-slide) .slide img {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
+		max-width: 100%;
+		max-height: 100%;
+		width: auto;
+		height: auto;
+		object-fit: contain;
+		object-position: center center;
 	}
 
 	.slide-arrow {

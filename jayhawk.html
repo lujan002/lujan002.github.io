@@ -1,0 +1,190 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Junior Jay Animatronic Mascot - Luke Jansen</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="index.html" class="logo">Luke Jansen</a>
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul class="links">
+							<li><a href="index.html#header">Projects</a></li>
+							<li><a href="experiences.html">Experience</a></li>
+						</ul>
+						<ul class="icons nav-contact">
+							<li><a href="mailto:jansen.lu@northeastern.edu" class="icon solid fa-envelope">jansen.lu@northeastern.edu</a></li>
+							<li><a href="https://www.linkedin.com/in/luketjansen/" target="_blank" class="icon brands fa-linkedin">LinkedIn</a></li>
+							<li><a href="https://github.com/lujan002" target="_blank" class="icon brands fa-github">GitHub</a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+							<section class="post">
+								<header class="major">
+									<span class="date">Aug 2023 – Apr 2024</span>
+									<h1>Junior Jay Animatronic Mascot</h1>
+									<h6>University of Kansas Mechanical Engineering Capstone</h6>
+								</header>
+
+								<div class="video-slide" style="max-width: 800px; margin: 0 auto 2.5em auto; position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+									<iframe src="https://www.youtube.com/embed/p1z4z74mzpA" title="Junior Jay Animatronic Mascot Overview" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"></iframe>
+								</div>
+
+								<p>The scope of this project was to develop a wearable, Disney-style, animatronic suit with actuated facial features for the University of Kansas's flagship line of "Jayhawk" mascots. The project was sponsored by the Mechanical Engineering Department at the University of Kansas, with the primary client being the University of Kansas head mascot coach. The initiative aimed to revolutionize the university's mascot program by incorporating advanced, expressive features into a new mascot called "Junior Jay". The primary requirements outlined by the client included the ability for the mascots to display a wide range of dynamic, real-time facial expressions, like those seen in professionally animated characters.</p>
+
+								<figure class="image" style="max-width: 70%; margin: 0 auto 2.5em auto; display: block; line-height: 1.2;">
+									<img src="https://raw.githubusercontent.com/lujan002/Animatronic-Mascot-Suit/main/MascotSuits.png" alt="Mascot suits." style="width: 100%; height: auto; display: block; margin: 0 auto;" />
+								</figure>
+
+								<p>Designing an entirely new mascot head from the ground up was not feasible for the financial and time constraints of this project, so the University of Kansas athletics department graciously donated a retired "Baby Jay" mascot head for the team to retrofit into a proof-of-concept prototype for Junior Jay. Without their support, this project would not be possible.</p>
+
+								<p>This project provided a great mix of mechanical, electrical, and software engineering challenges. The engineering objectives were to modify this retired mascot head with seamless control of the mouth, eyebrow, and eyelid actuation mechanisms using custom facial expression detection &amp; control software, while maintaining durability, comfort, and ease of use. The project started in Aug. 2023 with initial drafts of mechanical models, code, and electrical schematics, then concluded in late Apr. 2024 with a functional prototype that met the majority of our project objectives. Below will be an outline of the final state of these three systems.</p>
+
+								<figure class="image" style="max-width: 70%; margin: 0 auto 2.5em auto; display: block; line-height: 1.2;">
+									<img src="images/junior_jay_team.jpg" alt="Team photo." style="width: 100%; height: auto; display: block; margin: 0 auto;" />
+									<figcaption style="text-align: center; font-size: 0.6em; margin-top: 0.5em; line-height: 1.2;">
+										Team photo.
+									</figcaption>
+								</figure>
+
+								<h2>Mechanism Sub-Systems</h2>
+
+								<h3>Beak</h3>
+								<p><strong>Goal:</strong> Open/close beak to simulate smile, shock.</p>
+								<p>The beak assembly consisted of a lightweight aluminum frame inserted into the original, detached foam beak to provide rigidity and a means for the servo motors to drive the beak. We selected servos rated for 45 kg·cm of torque, suitable for the high-torque demands of our application. This choice was driven by the requirement to counter the beak weight of 0.7 kg (6.87 N), with center of gravity centered 230 mm away (1.58 Nm Torque). After installation, the foam beak was re-stitched to the rest of the head for aesthetic purposes. A primary focus was on ensuring robustness and minimizing weight, and the final frame design shown below was no more than 0.4 kg.</p>
+								<figure class="image" style="max-width: 60%; margin: 0 auto 2.5em auto; display: block; line-height: 1.2;">
+									<img src="https://raw.githubusercontent.com/lujan002/Animatronic-Mascot-Suit/main/Beak.png" alt="Beak." style="width: 100%; height: auto; display: block; margin: 0 auto;" />
+
+								</figure>
+
+								<h3>Eyebrows</h3>
+								<p><strong>Goal:</strong> Rotate eyebrows to display nuanced emotions.</p>
+								<p>To enable the mascot to express nuanced emotions, precise control over the eyebrows was essential. The final design achieved this by incorporating each eyebrow as one of the links in a three-bar linkage driven by two servos. This gave each eyebrow two ways to pivot, and thus 2 DOF. Each servo connects to one of the other two links, one which keeps its pivot at a fixed distance, and one which has a slider cutout that allowed for its pivot to translate back and forth. The result is that the eyebrow can raise and lower itself without changing the angle it is oriented at (thus height and angle can be controlled separately). Given the aesthetic design constraints, the eyebrow actuation mechanisms were concealed inside the head and behind the eyebrow. This in turn necessitated custom-printed shaft extensions so the servo shafts could reach through small holes in the forehead to connect to the links on the outside of the head. Press-fit threaded inserts and a star pattern connection on the shafts ensured the arms did not slip.</p>
+								<figure class="image" style="max-width: 60%; margin: 0 auto 2.5em auto; display: block; line-height: 1.2;">
+									<img src="https://raw.githubusercontent.com/lujan002/Animatronic-Mascot-Suit/main/Eyebrows.png" alt="Eyebrows." style="width: 100%; height: auto; display: block; margin: 0 auto;" />
+	
+								</figure>
+
+								<h3>Eyelids</h3>
+								<p><strong>Goal:</strong> Open/close eyelids to simulate blinking.</p>
+								<p>To enable the animatronics' eyelid functionality, the eyes of the original mascot head had to be removed and offset a small distance to give space for the eyelid fabric to operate. The opportunity to fully rework the eye design was taken. This process involved vacuum forming a PETG plastic sheet over a 3D printed buck, which was then painted with a one-way reflective mirror coating. This new eye was mounted to a frame, along with, conveniently, all the eyelid actuation mechanisms and even the eyebrow servos. This allowed for easy removal of the whole assembly when maintenance was required. The frame was designed to support the eyebrow mechanics while providing enough space for the eyelid material to spool without increasing in diameter. For eyelid actuation, a compact timing belt system was chosen instead of gears or chains due to its reliability and quiet operation (similar to those used in 3D printers). The eyelid fabric was stitched directly to the belt.</p>
+								<p>Initially, a DC motor was considered for this system, but its torque, size, and control limitations led to the selection of a continuous servo motor, which offers sufficient torque and simpler control. To compensate for the servo's slower speed, a gear system was incorporated to increase the speed of the eyelid movement while maintaining the necessary torque for smooth operation. Unlike a normal servo, the continuous servo has no positional feedback. To work around this, two limit switches were added to shut off the motors when tripped. A small object stitched to the belt would trip one switch when the eye was fully open, and the other when fully closed, thus shutting off the motors.</p>
+								<p>To better understand how this system works, please watch the overview video in the section below.</p>
+								<figure class="image" style="max-width: 60%; margin: 0 auto 2.5em auto; display: block; line-height: 1.2;">
+									<img src="https://raw.githubusercontent.com/lujan002/Animatronic-Mascot-Suit/main/Eyelids.png" alt="Eyelids." style="width: 100%; height: auto; display: block; margin: 0 auto;" />
+
+								</figure>
+
+								<h2>Expression Detection &amp; Control Software</h2>
+								<p>Arguably the part of this project with the most innovative potential, and deviation from traditional animatronic models, is the integration of facial detection technology to control the mechanical systems described above. The software algorithm is actually a single "master" python script (master_script.py) running on the Raspberry Pi, which handles everything from the capturing of video frames, detection of faces, prediction of a facial expression, and sending of signal to the motors to adjust servo angles to mimic the detected expression.</p>
+								<p>Early in the development process, it was decided that due to computational limitations of the Raspberry Pi and to avoid jittery mechanical movements, the software would predict discrete emotions and control the motors in set configurations. The emotions to be predicted were "neutral", "angry", "happy", "surprised", and "sad". Separately, the mouth and eyes would be predicted as "open" or "closed". This approach was chosen over a design that would mimic every nuanced movement of the wearer, prioritizing smooth and stable operation of the mascot.</p>
+								<figure class="image" style="max-width: 60%; margin: 0 auto 2.5em auto; display: block; line-height: 1.2;">
+									<img src="https://raw.githubusercontent.com/lujan002/Animatronic-Mascot-Suit/main/EyebrowExpressions.png" alt="Eyebrow expressions." style="width: 100%; height: auto; display: block; margin: 0 auto;" />
+
+								</figure>
+								<p>The facial detection was naturally split up into different sections based on the mechanical sub-system that it would control. For control of the eyes and mouth, first open-source computer vision libraries were used to extract the coordinates of the facial landmarks (eyes and mouth in this case). Expressions were then classified by measuring the distance between a select few coordinates, such as the outer-most and upper/lower-most mouth edges, and calculating an aspect ratio (mouth height/mouth width). Naturally, when the eyes or mouth are closed, this aspect ratio decreases. Thus, a certain empirically determined ratio was selected and compared with each incoming frame to label the mouth/eyes as "closed" if below the threshold, and "open" if above the threshold. The method implemented in the final master script uses the dlib facial landmark model, although Google's MediaPipe model was also considered.</p>
+								<p>The movement of the eyebrows, arguably the most important mechanical sub-system in dynamic emotion display, was more intricate. Two approaches were tested for detecting the wearer's emotion out of the five discrete emotions. The first approach used a similar approach to the mouth and eye detection, this time using the eyebrow facial landmark coordinates to come up with some ratio. This posed a more tricky problem than with the eyes and mouth however, as it was quickly realised that predicting emotions based on the eyebrows alone for emotions like sad, happy, and neutral were quite subtle. It would have been possible to combine the eyebrow ratio with a ratio for other landmarks on the face, but ultimately it was decided that a more effective approach would be to use an image classification model to predict discrete emotions.</p>
+								<p>A convolutional neural network (CNN) was trained on the FER-2013 dataset (Facial Emotion Recognition) to classify facial expressions. The training process is documented in train-emotion-detection.py. The original pre-trained model is attached directly as model_optimal2.h5. This model was converted to a tensorflow.lite model (saved as model.tflite in convert_to_tflite.py), which is directly used in master_script.py. Readers interested in the implementation of this model, its architecture, or the training process are encouraged to review these scripts. The model achieves over 75% accuracy on the validation dataset, with even better performance observed in practical use (potentially a result of the FER-2013 dataset's well-known problem with inconsistent labeling).</p>
+								<figure class="image" style="max-width: 60%; margin: 0 auto 2.5em auto; display: block; line-height: 1.2;">
+									<img src="https://raw.githubusercontent.com/lujan002/Animatronic-Mascot-Suit/main/ModelPerformance.png" alt="Model performance." style="width: 100%; height: auto; display: block; margin: 0 auto;" />
+			
+								</figure>
+								<p>In order to ensure the program could run as close to real-time as possible, steps were taken to reduce the computational load. One simple approach used was to limit the number of frames processed. Several different frame rates were tested, and ultimately 5 fps was chosen as a nice balance between computational low cost and quick enough updates. The images were also converted to greyscale before processing, which is what the model was trained on and also happens to be more computationally efficient. The model was run using Google's TensorFlow.Lite library, which is purpose built for running models on lighter hardware. Challenges in detecting faces within the dark, close-up environment inside the mascot's head, even with the use of a low-light, wide-angle camera, hindered the successful demonstration of the internal camera functionality. Efforts to improve face detection under these conditions included enhancing illumination and artificially padding the frame borders to create the illusion of a more distant face. For our demonstration purposes, the camera was positioned outside the head. Future work is required to fully achieve the project's initial objectives under these specific conditions.</p>
+								<figure class="image" style="max-width: 60%; margin: 0 auto 2.5em auto; display: block; line-height: 1.2;">
+									<img src="https://raw.githubusercontent.com/lujan002/Animatronic-Mascot-Suit/main/WebcamExpressions.png" alt="Webcam expressions." style="width: 100%; height: auto; display: block; margin: 0 auto;" />
+					
+								</figure>
+								<p>Whatever the approach, signals to the servos were sent from the designated GPIO pins using the pigpio library.</p>
+
+								<h2>Electrical System</h2>
+								<p>The electrical system composed of 50,000 mAh battery pack specifically chosen for a 2 hr. lifetime (or that of a typical basketball game), its three USB type A and C ports, and its 5–20V capacity. This battery choice was driven by the aforementioned 45 kg·cm servos we selected required 9V power to achieve our torque target. Two HUSB238 power delivery breakouts configured to draw 5V and 9V respectively were connected the USB ports on the battery. The Raspberry Pi was directly connected to the third port. In this configuration, all the servos requiring 5V (eyelid and eyebrow servos) were powered separately from the 9V servos (beak servos). Miscellaneous components such as the eyelid limit switches, fans, camera, and LED indicator panel were to be powered by the Raspberry Pi.</p>
+								<p>There were two key considerations when designing this system. This system contains approximately fifty loose wires, and it quickly became apparent that wire management was crucial for easy maintenance, visibility inside the head, and ensuring the integrity of the sensitive wiring. All wires were strategically routed around the internal structure of the head. Wires were systematically braided and grouped by sub-system, labeled, and secured to prevent obstruction of vision, reduce tangling risks, and simplify maintenance procedures. A Raspberry Pi GPIO pin extension board with screw clamps was used and gave much needed easy accessibility when pulling and plugging wires. A power bus was designed and implemented that handled the distribution of power to all motors in a convenient location. Since these electrical components would be operating very close to a human's face, safety was also a top priority. Initial testing done on the 9V beak servos under high load produced worrying results on the multimeter. In some cases, the current draw of an individual servo could spike to well over 1A. To prepare for dangerous current spikes like this, two 1Ω power resistors in series were added to the 9V rail on the power bus to dissipate any excess current as heat. An emergency safety switch was also added to shut the 9V motors off.</p>
+								<figure class="image" style="max-width: 60%; margin: 0 auto 2.5em auto; display: block; line-height: 1.2;">
+									<img src="https://raw.githubusercontent.com/lujan002/Animatronic-Mascot-Suit/main/Electronics.png" alt="Electronics." style="width: 100%; height: auto; display: block; margin: 0 auto;" />
+							
+								</figure>
+								<figure class="image" style="max-width: 60%; margin: 0 auto 2.5em auto; display: block; line-height: 1.2;">
+									<img src="https://raw.githubusercontent.com/lujan002/Animatronic-Mascot-Suit/main/ElectricalDiagram.png" alt="Electrical diagram." style="width: 100%; height: auto; display: block; margin: 0 auto;" />
+									<figcaption style="text-align: center; font-size: 0.6em; margin-top: 0.5em; line-height: 1.2;">
+										Electrical diagram.
+									</figcaption>
+								</figure>
+
+								<h3>Voltage Converter PCB</h3>
+								<p>The servos that move the lower beak were chosen for their high torque at operating voltages above 5V. The servos used were actually rated for 5V–8.4V, so initially a voltage converter circuit was designed to step down the input voltage to 8V. Later it was realized that the servos could run on 9V directly from the power bank, making this voltage converter irrelevant. Regardless, a short summary of the work done on it will be listed. A dummy breakout was used to draw 12V from the power bank, which was further stepped down to 8V by this circuit.</p>
+								<p>The schematic shown below incorporates an LM317 Voltage Regulator (footprint) and a series of commonly available resistors.</p>
+								<p>The board was designed in KiCAD and printed at the school shop.</p>
+								<figure class="image" style="max-width: 30%; margin: 0 auto 2.5em auto; display: block; line-height: 1.2;">
+									<img src="https://raw.githubusercontent.com/lujan002/Animatronic-Mascot-Suit/main/VoltageConverterSchematic.png" alt="Voltage converter schematic." style="width: 100%; height: auto; display: block; margin: 0 auto;" />
+									<figcaption style="text-align: center; font-size: 0.6em; margin-top: 0.5em; line-height: 1.2;">
+										Voltage converter schematic.
+									</figcaption>
+								</figure>
+								<figure class="image" style="max-width: 30%; margin: 0 auto 2.5em auto; display: block; line-height: 1.2;">
+									<img src="https://raw.githubusercontent.com/lujan002/Animatronic-Mascot-Suit/main/VoltageConverterPCB.png" alt="Voltage converter PCB." style="width: 100%; height: auto; display: block; margin: 0 auto;" />
+									<figcaption style="text-align: center; font-size: 0.6em; margin-top: 0.5em; line-height: 1.2;">
+										Voltage converter PCB.
+									</figcaption>
+								</figure>
+
+								<h3>Emotion LED Indicator Panel</h3>
+								<p>One concern during operation of the animatronic was that the wearer would have no idea what expression was currently being used. The beak and eyelids would be obvious enough to the wearer if they were open or closed, but there would be no way of knowing the current state of the eyebrows. An LED panel indicator panel was designed as a solution to this. The panel was planned to be mounted inside the head and include seven LEDs, five for each of the discrete emotions, one LED for the mouth state, and one for the eye state. This would tell the wearer inside if the expression detection program is working as intended. Ultimately time constraints prevented the implementation of this optional feature, but the concept was proven to work.</p>
+								<p>The board was designed in KiCAD and printed at the school shop.</p>
+								<figure class="image" style="max-width: 30%; margin: 0 auto 2.5em auto; display: block; line-height: 1.2;">
+									<img src="https://raw.githubusercontent.com/lujan002/Animatronic-Mascot-Suit/main/LEDSchematic.png" alt="LED schematic." style="width: 100%; height: auto; display: block; margin: 0 auto;" />
+									<figcaption style="text-align: center; font-size: 0.6em; margin-top: 0.5em; line-height: 1.2;">
+										LED schematic.
+									</figcaption>
+								</figure>
+								<figure class="image" style="max-width: 30%; margin: 0 auto 2.5em auto; display: block; line-height: 1.2;">
+									<img src="https://raw.githubusercontent.com/lujan002/Animatronic-Mascot-Suit/main/LEDPCB.png" alt="LED PCB." style="width: 100%; height: auto; display: block; margin: 0 auto;" />
+									<figcaption style="text-align: center; font-size: 0.6em; margin-top: 0.5em; line-height: 1.2;">
+										LED PCB.
+									</figcaption>
+								</figure>
+
+								<h2>Full Documentation</h2>
+								<p>For a full detail of the technical work involved in the project, please refer to the "Junior Jay Final Poster" and "Junior Jay Final Report" documents in the repository.</p>
+								<p style="text-align: center; margin-top: 1em;">
+									<a href="https://github.com/lujan002/Animatronic-Mascot-Suit" target="_blank" class="button icon brands fa-github">
+										View Repository on GitHub
+									</a>
+								</p>
+
+							</section>
+
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Certifiable Robot-World Hand-Eye Calibration - Luke Jansen</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<script>
+			MathJax = {
+				tex: {
+					inlineMath: [['$', '$'], ['\\(', '\\)']],
+					displayMath: [['$$', '$$'], ['\\[', '\\]']]
+				}
+			};
+		</script>
+		<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="index.html" class="logo">Luke Jansen</a>
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul class="links">
+							<li><a href="index.html#header">Projects</a></li>
+							<li><a href="experiences.html">Experience</a></li>
+						</ul>
+						<ul class="icons nav-contact">
+							<li><a href="mailto:jansen.lu@northeastern.edu" class="icon solid fa-envelope">jansen.lu@northeastern.edu</a></li>
+							<li><a href="https://www.linkedin.com/in/luketjansen/" target="_blank" class="icon brands fa-linkedin">LinkedIn</a></li>
+							<li><a href="https://github.com/lujan002" target="_blank" class="icon brands fa-github">GitHub</a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+							<section class="post">
+								<header class="major">
+									<span class="date">Fall 2025</span>
+									<h1>Certifiable Robot-World Hand-Eye Calibration</h1>
+									<h6>Northeastern EECE 5550: Mobile Robotics</h6>
+								</header>
+
+								<h2>Abstract</h2>
+								<p>Extrinsic calibration—finding spatial transformations between sensors rigidly mounted to a platform—is 
+									critical for multi-sensor robotic systems. Errors during calibration can propagate through downstream 
+									tasks, causing failures in applications such as visual servoing, autonomous navigation, and SLAM. 
+									Traditional calibration methods either solve rotations and translations separately (corrupting translation 
+									estimates with rotation errors) or rely on iterative nonlinear optimization (which may converge to local 
+									minima with no guarantee of correctness).
+								</p>
+								<p>In this project, we implemented <a href="https://arxiv.org/abs/2507.23045" target="_blank"><strong>Wise et al.'s</strong></a> 
+									certifiably correct algorithm for generalized robot-world 
+									hand-eye calibration (RWHEC) that reformulates the problem as a quadratically constrained quadratic program 
+									(QCQP) and solves a semidefinite programming (SDP) relaxation. When the relaxation is tight, the solution 
+									is provably globally optimal. We validated this method on a custom dual-camera platform using AprilTag 
+									detections and OptiTrack motion capture, achieving a relative duality gap of 
+									$2.14 \times 10^{-9}$, meaningfully below the $10^{-6}$ threshold used to guarantee global optimality.
+								</p>
+								<figure class="image" style="max-width: 60%; margin: 0 auto 2.5em auto; display: block; line-height: 1.2;">
+									<img src="images/certifiable_rwhec.jpg" alt="Dual-camera rig setup for RWHEC calibration." style="width: 100%; height: auto; display: block; margin: 0 auto;" />
+									<figcaption style="text-align: center; font-size: 0.6em; margin-top: 0.5em; line-height: 1.2;">
+										Dual-camera rig with Arducam IMX219 cameras mounted on a 3D-printed frame with 11.32 cm baseline.
+									</figcaption>
+								</figure>
+
+								<h2>Problem Formulation</h2>
+								<p>The robot-world hand-eye calibration (RWHEC) problem jointly estimates two sets of unknown rigid-body 
+									transformations: the hand-eye transformation $\mathbf{X} \in SE(3)$ relating camera sensors to the robot body 
+									frame, and the robot-world transformation $\mathbf{Y} \in SE(3)$ relating calibration targets (AprilTags) to a fixed 
+									world frame. These cannot be measured directly, but are recovered by exploiting the kinematic constraint:
+								</p>
+								<p style="text-align: center; font-style: italic; margin: 1.5em 0;">
+									$\mathbf{A}_{i}\mathbf{X} = \mathbf{Y}\mathbf{B}_{i}, \quad i=1,\ldots,N$
+								</p>
+								<p>where $\mathbf{A}_{i}$ is the pose of the robot platform in the world frame. In this case, we chose to
+									define our world frame as the OptiTrack motion capture system in Northeastern's EXP high bay which could precisely measure the pose of our camera rig.
+									$\mathbf{B}_{i}$ is the target pose in the camera frame (obtained from AprilTag detection), and 
+									$\mathbf{X}$ and $\mathbf{Y}$ are the unknown transformations we seek to estimate.
+								</p>
+								<p>The problem is formulated as maximum likelihood estimation under probabilistic noise models, then converted 
+									into QCQP form by vectorizing rotation and translation components. Semidefinite programming (SDP) relaxation 
+									yields a convex problem with guaranteed global optimality when the relaxation is tight.
+								</p>
+
+								<h2>Data Collection</h2>
+								<p>Our experimental setup consisted of two Arducam IMX219 cameras ($1280 \times 720$ at 30 fps) mounted on a 
+									3D-printed frame with a baseline of 11.32 cm and a $90°$ mounting angle. We collected synchronized AprilTag 
+									detections from both cameras and OptiTrack motion capture data from reflectivemarkers placed on the camera rig.
+								</p>
+								<figure class="image" style="max-width: 60%; margin: 0 auto 2.5em auto; display: block; line-height: 1.2;">
+									<img src="images/apriltags_drone_cage.jpg" alt="AprilTag setup in the drone cage for calibration data collection." style="width: 100%; height: auto; display: block; margin: 0 auto;" />
+									<figcaption style="text-align: center; font-size: 0.6em; margin-top: 0.5em; line-height: 1.2;">
+										AprilTag calibration targets placed on multiple surfaces (ground, left wall, right wall) to provide rotational diversity.
+									</figcaption>
+								</figure>
+
+
+								<h2>My Contributions</h2>
+								<p>As part of this team project, my contributions included:</p>
+								<ul>
+									<li><strong>Data Synchronization:</strong> Developed a workflow for synchronizing AprilTag detections and OptiTrack motion capture data. 
+									This included creating a script to plot roll, pitch, and yaw components of the optitrack motion data to visually determine where the sync flip occurred. </li>
+									<li><strong>Data Formatting:</strong> Created scripts to format the AprilTag detections and OptiTrack motion capture data into time-synchronized A-B matrix pairs that could be used with the original solver written by Wise et al.</li>
+									<li><strong>Results Visualization:</strong> Created visualization tools to display estimated camera trajectories, AprilTag poses, and calibration results.</li>
+								</ul>
+
+								<h2>Results</h2>
+								<p>Our calibration achieved a <strong>duality gap of $2.14 \times 10^{-9}$</strong>, confirming global optimality 
+									(well below the $10^{-6}$ threshold). The estimated distance between cameras was <strong>10.06 cm</strong>, 
+									relatively close to the physical measurement of <strong>11.32 cm</strong> (within 11% error).
+								</p>
+								<figure class="image" style="max-width: 60%; margin: 0 auto 2.5em auto; display: block; line-height: 1.2;">
+									<img src="images/rwhec_trajectory.jpg" alt="Estimated camera trajectory and AprilTag poses from RWHEC calibration." style="width: 100%; height: auto; display: block; margin: 0 auto;" />
+									<figcaption style="text-align: center; font-size: 0.6em; margin-top: 0.5em; line-height: 1.2;">
+										Estimated AprilTag poses and camera trajectory. Tags colored by surface: ground (green), left wall (red), right wall (blue).
+									</figcaption>
+								</figure>
+								<p>While the mean consistency error of 12.84 cm across 3,799 poses is relatively high, this reflects limitations 
+									in our data collection procedures (temporal synchronization challenges, camera quality, manual measurements) 
+									rather than optimization failure.
+								</p>
+
+
+								<h2>Full Report</h2>
+								<p>For more details, see the complete project report:</p>
+								<div style="width: 100%; max-width: 800px; margin: 2em auto; height: 600px;">
+									<iframe 
+										src="https://drive.google.com/file/d/14UCUU_YCiBwsYtWJG9HMDUO5c3W6MpZ7/preview"
+										width="100%" 
+										height="100%" 
+										style="border: none; display: block; margin: 0 auto;"
+										allow="autoplay">
+									</iframe>
+								</div>
+								<p style="text-align: center; margin-top: 1em;">
+									<a href="https://drive.google.com/file/d/14UCUU_YCiBwsYtWJG9HMDUO5c3W6MpZ7" target="_blank" class="button">
+										Read the Report
+									</a>
+								</p>
+								<p style="text-align: center; margin-top: 1em;">
+									<a href="https://github.com/lujan002/certifiable-rwhe-calibration" target="_blank" class="button icon brands fa-github">
+										View Code on GitHub
+									</a>
+								</p>
+
+							</section>
+
+					</div>
+
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
+

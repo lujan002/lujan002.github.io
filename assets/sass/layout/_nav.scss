@@ -19,7 +19,7 @@
 		line-height: 4rem;
 		margin: -4rem auto 0 auto;
 		overflow: hidden;
-		padding: 0 2rem 0 0;
+		padding: 0;
 		position: relative;
 		width: calc(100% - #{_size(padding) * 2});
 		max-width: _size(wrapper);
@@ -76,6 +76,48 @@
 				@include vendor('flex-grow', '0');
 				@include vendor('flex-shrink', '0');
 				margin-bottom: 0;
+			}
+
+			&.icons.nav-contact {
+				@include vendor('display', 'flex');
+				@include vendor('flex-direction', 'row');
+				@include vendor('align-items', 'stretch');
+				font-family: _font(family-heading);
+				font-weight: _font(weight-heading);
+				font-size: 0.8rem;
+				letter-spacing: 0.075em;
+				text-transform: uppercase;
+				padding-left: 1rem;
+
+				li {
+					display: block;
+					padding: 0;
+
+					a {
+						@include vendor('transition', (
+							'background-color #{_duration(transition)} ease-in-out',
+							'color #{_duration(transition)} ease-in-out'
+						));
+						display: block;
+						padding: 0 2rem;
+						outline: none;
+						line-height: 4rem;
+
+						&:hover {
+							color: inherit !important;
+							background-color: transparentize(_palette(invert, fg), 0.9);
+						}
+					}
+
+					a.icon:before {
+						width: auto;
+						height: auto;
+						line-height: inherit;
+						font-size: 0.9em;
+						margin-right: 0.35rem;
+						vertical-align: middle;
+					}
+				}
 			}
 		}
 

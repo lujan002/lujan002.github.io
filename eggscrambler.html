@@ -1,0 +1,136 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Robotic Arm + Egg Scrambler - Luke Jansen</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="index.html" class="logo">Luke Jansen</a>
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul class="links">
+							<li><a href="index.html#header">Projects</a></li>
+							<li><a href="experiences.html">Experience</a></li>
+						</ul>
+						<ul class="icons nav-contact">
+							<li><a href="mailto:jansen.lu@northeastern.edu" class="icon solid fa-envelope">jansen.lu@northeastern.edu</a></li>
+							<li><a href="https://www.linkedin.com/in/luketjansen/" target="_blank" class="icon brands fa-linkedin">LinkedIn</a></li>
+							<li><a href="https://github.com/lujan002" target="_blank" class="icon brands fa-github">GitHub</a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+							<section class="post">
+								<header class="major">
+									<span class="date">Personal Project</span>
+									<h1>Robotic Arm + Egg Scrambler</h1>
+									<h6>Personal Project</h6>
+								</header>
+
+								<p>This project is really a two-in-one project. I originally set out to build a robot arm with a gripper that could pick up and place objects. I accomplished this by taking a 
+									4 DoF design I found online and modifying it with a new gripper, and incorporated a ESP32 so I could use a PS4 controller for control. I documented my work in this video below.</p>
+								<div class="video-slide" style="max-width: 800px; margin: 0 auto 2.5em auto; position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+									<iframe src="https://www.youtube.com/embed/VW5HBfSHOiM" title="Robot Arm Egg Scrambler Video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"></iframe>
+								</div>
+								
+									<p>Soon after I thought of other ideas to apply this project to, and the idea came to me to swap the gripper end effector for a spatuala and create an autonomous egg 
+									scrambling robot. The final result can be seen in this video below.</p>
+									
+
+									
+								<div class="video-slide" style="max-width: 800px; margin: 0 auto 2.5em auto; position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+									<iframe src="https://www.youtube.com/embed/ewMSy4-Ajvs" title="Robot Arm Egg Scrambler Video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"></iframe>
+								</div>
+
+								<h2>Spatula End Effector Development</h2>
+								<p>The first prototype utilized a 1:1 gear ratio with an SG90 servo motor, enabling a 180-degree range of motion for the spatula.</p>
+								<figure class="image" style="max-width: 60%; margin: 0 auto 2.5em auto; display: block; line-height: 1.2;">
+									<img src="https://raw.githubusercontent.com/lujan002/Robot-Arm-Egg-Scrambler/main/gears_v1.png" alt="Gears v1" style="width: 100%; height: auto; display: block; margin: 0 auto;" />
+									<figcaption style="text-align: center; font-size: 0.6em; margin-top: 0.5em; line-height: 1.2;">
+										Gears v1.
+									</figcaption>
+								</figure>
+								<p>Adjusting to the challenges of programming movement with only 180 degrees of rotation, the second iteration introduced a middle gear to achieve a 2.5:1 gear ratio, thus enabling a full 360-degree rotation. This change necessitated an upgrade to a more powerful servo due to the increased torque requirements.</p>
+								<figure class="image" style="max-width: 60%; margin: 0 auto 2.5em auto; display: block; line-height: 1.2;">
+									<img src="https://raw.githubusercontent.com/lujan002/Robot-Arm-Egg-Scrambler/main/gears_v2.png" alt="Gears v2" style="width: 100%; height: auto; display: block; margin: 0 auto;" />
+									<figcaption style="text-align: center; font-size: 0.6em; margin-top: 0.5em; line-height: 1.2;">
+										Gears v2.
+									</figcaption>
+								</figure>
+								<p>However, aligning the gears incorrectly proved to be problematic. The middle gear was not aligned with the other two, which caused increased friction and an imperfect mesh between the gears. I tried to address this by adjusting the number of teeth and the thickness of each tooth, but these changes did not resolve the issue. Ultimately, I found that removing the middle gear altogether led to a more robust design. Although this required slightly extending the base of the end effector to make space for a single, larger gear, the trade-off was well worth it for the improved performance and reliability.</p>
+
+								<h2>Motion Algorithm Development</h2>
+								<p>For the first iteration, I programmed the spatula to move in a circle ensuring it remains tangent to the pan's circumference. During testing, I realized that the silicone spatula insert I was using was not adequate. The spatula worked fine when the eggs were liquid, but as they began to solidify, the flexible silicone started to bend over the eggs rather than keep contact with the bottom of the pan. My solution was to replace the spatula with a more rigid one (shown at top).</p>
+								<figure class="image" style="max-width: 60%; margin: 0 auto 2.5em auto; display: block; line-height: 1.2;">
+									<img src="https://raw.githubusercontent.com/lujan002/Robot-Arm-Egg-Scrambler/main/RoboChef.png" alt="RoboChef with rigid spatula" style="width: 100%; height: auto; display: block; margin: 0 auto;" />
+									<figcaption style="text-align: center; font-size: 0.6em; margin-top: 0.5em; line-height: 1.2;">
+										RoboChef with floppy silicone spatula.
+									</figcaption>
+								</figure>
+								<figure class="image" style="max-width: 60%; margin: 0 auto 2.5em auto; display: block; line-height: 1.2;">
+									<img src="https://raw.githubusercontent.com/lujan002/Robot-Arm-Egg-Scrambler/main/RoboChef2.png" alt="RoboChef in action" style="width: 100%; height: auto; display: block; margin: 0 auto;" />
+									<figcaption style="text-align: center; font-size: 0.6em; margin-top: 0.5em; line-height: 1.2;">
+										RoboChef with rigid spatula.
+									</figcaption>
+								</figure>
+								<p>Despite this change, I still noticed that the above approach led to eggs splashing out of the pan; the eggs quickly became clumped together in front of the spatula as they started to solidify. To remedy this, the next iteration incorporated an alternating clockwise/counter-clockwise movement and a swipe down the middle of the pan at every 90 degrees that served to push the eggs towards the middle of the pan. This ensured that all the eggs would not clump together at the edge of the pan.</p>
+								<p>For easy use on a variety of setups, the software is modular: pan radius, pan center coordinates, spatula operating height, and speed are all easily adjustable parameters.</p>
+
+								<h2>Cooked Egg Detection Software</h2>
+								<p>In order to make the robot truly autonomous, a way to detect when the eggs are cooked was necessary. A novel addition to this project was the task of training a machine learning CNN model to take images from a camera stream and use this to predict whether the picture it sees is cooked or uncooked. I created a Python script to scrape images from the web using the Beautiful Soup library and saved these images into "cooked" and "uncooked" directories. Unfortunately, this feature never was implemented before I retired the project.</p>
+								<figure class="image" style="max-width: 60%; margin: 0 auto 2.5em auto; display: block; line-height: 1.2;">
+									<img src="https://raw.githubusercontent.com/lujan002/Robot-Arm-Egg-Scrambler/main/CookedDataset.png" alt="Cooked eggs dataset sample" style="width: 100%; height: auto; display: block; margin: 0 auto;" />
+									<figcaption style="text-align: center; font-size: 0.6em; margin-top: 0.5em; line-height: 1.2;">
+										Cooked eggs dataset sample.
+									</figcaption>
+								</figure>
+								<figure class="image" style="max-width: 60%; margin: 0 auto 2.5em auto; display: block; line-height: 1.2;">
+									<img src="https://raw.githubusercontent.com/lujan002/Robot-Arm-Egg-Scrambler/main/UncookedDataset.png" alt="Uncooked eggs dataset sample" style="width: 100%; height: auto; display: block; margin: 0 auto;" />
+									<figcaption style="text-align: center; font-size: 0.6em; margin-top: 0.5em; line-height: 1.2;">
+										Uncooked eggs dataset sample.
+									</figcaption>
+								</figure>
+
+								<p>Code, design files, and more details are available in the github repository.</p>
+								<p style="text-align: center; margin-top: 1em;">
+									<a href="https://github.com/lujan002/Robot-Arm-Egg-Scrambler" target="_blank" class="button icon brands fa-github">
+										View on GitHub
+									</a>
+								</p>
+
+							</section>
+
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
