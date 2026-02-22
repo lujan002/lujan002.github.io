@@ -2969,7 +2969,7 @@ input, select, textarea {
 					position: absolute;
 					top: 50%;
 					width: calc(50% - 6rem);
-					border-top: solid 2px;
+					border-top: none;
 				}
 
 				header.major > .date:before {
